@@ -61,7 +61,7 @@ export class PipelineChart {
         `;
     }
 
-    renderGanttGrid(res) {
+    renderGanttGrid(res, activeCycle = null) {
         if (!this.tableContainer) return;
 
         const totalCycles = res.totalCycles;
@@ -73,7 +73,11 @@ export class PipelineChart {
         `;
 
         for (let c = 1; c <= totalCycles; c++) {
-            tableHeader += `<th class="p-2 text-center text-slate-400 font-mono min-w-[38px] text-xs">C${c}</th>`;
+            const isColActive = activeCycle === c;
+            const colClass = isColActive 
+                ? 'bg-sky-500/30 text-sky-200 font-bold ring-2 ring-sky-400 rounded-t' 
+                : 'text-slate-400';
+            tableHeader += `<th class="p-2 text-center font-mono min-w-[40px] text-xs transition ${colClass}">C${c}</th>`;
         }
 
         let tableRows = '';
@@ -90,13 +94,33 @@ export class PipelineChart {
             for (let c = 0; c < totalCycles; c++) {
                 const stage = row.cycles[c] || '-';
                 const cellHtml = this.getStagePill(stage);
-                tableRows += `<td class="p-1.5 text-center">${cellHtml}</td>`;
+                const isCellActive = activeCycle === (c + 1);
+                const cellBg = isCellActive ? 'bg-sky-500/15 ring-1 ring-sky-400/40' : '';
+                tableRows += `<td class="p-1.5 text-center transition ${cellBg}">${cellHtml}</td>`;
             }
 
             tableRows += `</tr>`;
         }
 
+        const activeStatusText = activeCycle 
+            ? `<span class="text-sky-400 font-bold">Actively Inspecting Cycle ${activeCycle} of ${totalCycles}</span>` 
+            : `<span class="text-slate-400">Showing full execution timeline (${totalCycles} cycles)</span>`;
+
         this.tableContainer.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 px-1">
+                <div class="text-xs">${activeStatusText}</div>
+                <div class="flex items-center gap-2">
+                    <button id="btn-play-cycles" class="px-2.5 py-1 text-xs rounded bg-sky-600 hover:bg-sky-500 text-white font-semibold transition flex items-center gap-1">
+                        <span>▶ Play Timeline</span>
+                    </button>
+                    <button id="btn-step-cycle" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                        <span>⏭ Step</span>
+                    </button>
+                    <button id="btn-reset-cycles" class="px-2.5 py-1 text-xs rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
+                        <span>↺ Full View</span>
+                    </button>
+                </div>
+            </div>
             <div class="overflow-x-auto border border-slate-700/60 rounded-lg shadow-inner bg-slate-900/60">
                 <table class="w-full text-xs border-collapse">
                     <thead class="bg-slate-800 text-slate-300 border-b border-slate-700">

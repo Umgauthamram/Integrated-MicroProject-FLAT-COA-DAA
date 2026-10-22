@@ -44,6 +44,19 @@ export class DfaVisualizer {
         }
     }
 
+    async stepAnimate(line, onStepCallback = null) {
+        if (!line || !line.transitions || line.transitions.length === 0) return;
+        this.render('q0');
+        await new Promise(r => setTimeout(r, 250));
+
+        for (let i = 0; i < line.transitions.length; i++) {
+            const t = line.transitions[i];
+            this.render(t.toState, t);
+            if (onStepCallback) onStepCallback(t, i + 1, line.transitions.length);
+            await new Promise(r => setTimeout(r, 400));
+        }
+    }
+
     drawStateNode(ctx, key, state, isCurrent) {
         const radius = 28;
 

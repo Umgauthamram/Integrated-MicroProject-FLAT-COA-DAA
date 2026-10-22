@@ -4,7 +4,7 @@ An integrated CS micro-project combining **Formal Languages & Automata Theory (F
 
 ## 🔗 Links
 - **GitHub Repository:** [https://github.com/Umgauthamram/Integrated-MicroProject-FLAT-COA-DAA](https://github.com/Umgauthamram/Integrated-MicroProject-FLAT-COA-DAA)
-- **Live Deployed Application (Vercel):** [https://integrated-microproject-flat-coa-daa.vercel.app](https://integrated-microproject-flat-coa-daa.vercel.app)
+- **Live Deployed Application (Vercel):** [https://integratedmicroproject.vercel.app/](https://integratedmicroproject.vercel.app/)
 - **Live Deployed Application (GitHub Pages):** [https://umgauthamram.github.io/Integrated-MicroProject-FLAT-COA-DAA/](https://umgauthamram.github.io/Integrated-MicroProject-FLAT-COA-DAA/)
 
 ## 🎓 Student Details
