@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated CS Micro-Project: FLAT, COA & DAA Simulator</title>
+    <meta name="description" content="Micro-Instruction Lexer, Pipelined Processor Simulator, and Optimal Control Path Analyzer integrating FLAT DFA, COA 5-Stage Pipeline, and DAA Dijkstra Routing.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-sky-500/30 selection:text-sky-200">
+
+    <!-- Top Navigation Header -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 via-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-sky-500/20 font-mono font-black text-white text-lg">
+                    μP
+                </div>
+                <div>
+                    <h1 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
+                        Micro-Instruction Lexer, Pipelined Processor & Control Path Analyzer
+                    </h1>
+                    <p class="text-xs text-slate-400">
+                        Integrated Academic Micro-Project: <span class="text-sky-400 font-semibold">FLAT</span> (DFA) + <span class="text-indigo-400 font-semibold">COA</span> (5-Stage RISC) + <span class="text-emerald-400 font-semibold">DAA</span> (Dijkstra)
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 text-xs">
+                <div class="bg-slate-800/80 border border-slate-700/80 px-3 py-1.5 rounded-lg flex items-center gap-2 text-slate-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>Student: <strong class="text-white">Gautham Ram S</strong></span>
+                    <span class="text-slate-500">|</span>
+                    <span class="text-slate-400">B.Tech CSE</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="max-w-7xl mx-auto px-4 flex border-t border-slate-800/80 overflow-x-auto text-xs">
+            <button class="nav-tab px-4 py-2.5 font-semibold border-b-2 border-sky-500 text-sky-400 bg-slate-800/80 transition flex items-center gap-2" data-view="all">
+                <span>⚡ Unified Full Simulator</span>
+            </button>
+            <button class="nav-tab px-4 py-2.5 font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2" data-view="dfa">
+                <span>🔤 FLAT: DFA Automaton</span>
+            </button>
+            <button class="nav-tab px-4 py-2.5 font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2" data-view="pipeline">
+                <span>⏱️ COA: 5-Stage Pipeline</span>
+            </button>
+            <button class="nav-tab px-4 py-2.5 font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition flex items-center gap-2" data-view="dijkstra">
+                <span>🧭 DAA: Dijkstra Shortest Path</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+
+        <!-- Microcode Input & Control Panel Card -->
+        <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs uppercase font-bold tracking-wider text-sky-400">Microcode Assembly Input</span>
+                    <span class="text-[11px] text-slate-500">(Σ = {LOAD, STORE, ADD, SUB, JMP, R0-R7, Imm, Comma, Semicolon})</span>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Preset Selector -->
+                    <div class="flex items-center gap-2 text-xs">
+                        <label for="preset-selector" class="text-slate-400 font-medium">Preset:</label>
+                        <select id="preset-selector" class="bg-slate-800 border border-slate-700 text-slate-200 rounded-lg px-2.5 py-1 text-xs focus:ring-1 focus:ring-sky-500 outline-none">
+                            <option value="arithmetic">1. Arithmetic RAW Hazard Sequence</option>
+                            <option value="hazard">2. Consecutive Data Dependency</option>
+                            <option value="branch">3. Branch Control Hazard (JMP)</option>
+                            <option value="syntax_error">4. Syntax Rejection Test Cases</option>
+                        </select>
+                    </div>
+
+                    <!-- Forwarding Toggle -->
+                    <label class="flex items-center gap-2 text-xs text-slate-300 cursor-pointer bg-slate-800/80 border border-slate-700/80 px-2.5 py-1 rounded-lg hover:border-slate-600 transition">
+                        <input type="checkbox" id="toggle-forwarding" class="rounded bg-slate-700 border-slate-600 text-sky-500 focus:ring-0 w-3.5 h-3.5" checked>
+                        <span>Data Forwarding</span>
+                    </label>
+
+                    <!-- Run Button -->
+                    <button id="btn-run-all" class="bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow-md shadow-sky-500/20 transition flex items-center gap-1.5 active:scale-95">
+                        <span>▶ Run Simulation</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Code Editor & Status Bar -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div class="lg:col-span-8">
+                    <textarea id="microcode-editor" rows="5" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 font-mono text-xs text-sky-300 focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none resize-none leading-relaxed shadow-inner" placeholder="Enter microcode instructions (e.g., LOAD R1, 10; ADD R2, R1;)"></textarea>
+                </div>
+                <div class="lg:col-span-4 flex flex-col justify-between p-3 bg-slate-950/60 border border-slate-800/80 rounded-lg text-xs space-y-2">
+                    <div>
+                        <div class="text-slate-400 text-[11px] uppercase font-semibold mb-1">DFA Engine Status</div>
+                        <div id="lexer-status-badge">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> DFA Syntax Verified
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-[11px] text-slate-400 border-t border-slate-800/80 pt-2 space-y-1">
+                        <div>• Grammatical Format: <code class="text-amber-300">OP Rd, Rs;</code> | <code class="text-amber-300">OP Rd, Imm;</code></div>
+                        <div>• Supported Opcodes: <code class="text-sky-300">LOAD, STORE, ADD, SUB, JMP</code></div>
+                        <div>• Register File: <code class="text-purple-300">R0 – R7 (3-bit index)</code></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 1: UNIFIED ALL-IN-ONE SIMULATOR -->
+        <div id="view-all" class="tab-content space-y-6">
+            
+            <!-- Section 1: FLAT DFA State Machine & Control Words -->
+            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
+                    <div>
+                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="w-6 h-6 rounded bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
+                            FLAT Module: Deterministic Finite Automaton (DFA) Lexical Analyzer
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Formal 5-tuple: $M = (Q, \Sigma, \delta, q_0, F)$, with $Q=\{q_0, q_1, q_2, q_3, q_4, q_{accept}, q_{reject}\}$ and $F=\{q_{accept}\}$.
+                        </p>
+                    </div>
+                    <button id="btn-run-dfa" class="text-xs bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 px-3 py-1 rounded transition">
+                        Step DFA
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <!-- DFA State Diagram Canvas -->
+                    <div class="lg:col-span-7 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col items-center justify-center">
+                        <div class="text-[11px] text-slate-400 w-full mb-1 flex items-center justify-between">
+                            <span>Interactive DFA State Transition Diagram</span>
+                            <span class="text-slate-500">Node Glowing indicates active state</span>
+                        </div>
+                        <canvas id="dfa-canvas" width="820" height="320" class="w-full h-auto max-h-[300px]"></canvas>
+                    </div>
+
+                    <!-- DFA Transition Table -->
+                    <div class="lg:col-span-5 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col">
+                        <div class="text-[11px] text-slate-400 mb-2 font-semibold">Parsed Tokens & Control Words</div>
+                        <div id="dfa-table-container" class="flex-1 max-h-[290px] overflow-y-auto"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: COA 5-Stage Pipeline Simulator -->
+            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
+                    <div>
+                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="w-6 h-6 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
+                            COA Module: 5-Stage RISC CPU Pipeline Simulator with Hazard Detection
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Simulates Fetch (IF), Decode (ID), Execute (EX), Memory (MEM), and Write-Back (WB) with RAW and Control Hazard resolution.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pipeline Performance Metrics Cards -->
+                <div id="pipeline-metrics-container"></div>
+
+                <!-- Gantt Chart Cycle Grid -->
+                <div id="pipeline-table-container" class="mb-4"></div>
+
+                <!-- Hazard Diagnostics Log -->
+                <div id="hazard-log-container"></div>
+            </section>
+
+            <!-- Section 3: DAA Dijkstra Optimal Control Path Routing -->
+            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 border-b border-slate-800/80 pb-3">
+                    <div>
+                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">3</span>
+                            DAA Module: Optimal Control Path Routing via Dijkstra's Algorithm
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Directed Weighted Graph modeling CPU Functional Units. Latency minimized using custom Min-Heap: $O((V+E)\log V)$.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs">
+                        <label for="dijkstra-target-select" class="text-slate-400 font-medium">Route Target Unit:</label>
+                        <select id="dijkstra-target-select" class="bg-slate-800 border border-slate-700 text-slate-200 rounded-lg px-2.5 py-1 text-xs focus:ring-1 focus:ring-emerald-500 outline-none">
+                            <option value="WB_BUS">Write-Back Bus (WB_BUS) - ADD / SUB / LOAD</option>
+                            <option value="DATA_MEM">Data Memory (DATA_MEM) - STORE</option>
+                            <option value="BRANCH_UNIT">Branch Unit (BRANCH_UNIT) - JMP</option>
+                            <option value="ALU">Arithmetic Logic Unit (ALU)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                    <!-- Graph Canvas -->
+                    <div class="lg:col-span-6 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col items-center justify-center">
+                        <div class="text-[11px] text-slate-400 w-full mb-1 flex items-center justify-between">
+                            <span>Hardware Interconnect Directed Graph</span>
+                            <span class="text-emerald-400 font-semibold">Green Glow: Optimal Route</span>
+                        </div>
+                        <canvas id="graph-canvas" width="820" height="320" class="w-full h-auto max-h-[300px]"></canvas>
+                    </div>
+
+                    <!-- Step-by-Step Relaxation Steps -->
+                    <div class="lg:col-span-6 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col">
+                        <div class="text-[11px] text-slate-400 mb-2 font-semibold">Dijkstra Min-Heap Relaxation Trace</div>
+                        <div id="dijkstra-steps-container" class="flex-1 max-h-[290px] overflow-y-auto"></div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- VIEW 2: FLAT DEEP DIVE -->
+        <div id="view-dfa" class="tab-content hidden space-y-6">
+            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 shadow-xl">
+                <h2 class="text-lg font-bold text-white mb-2">FLAT Module: Deterministic Finite Automaton (DFA) Specification</h2>
+                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                    In Formal Languages and Automata Theory, a DFA is a 5-tuple $M = (Q, \Sigma, \delta, q_0, F)$ where for every state and input symbol, there is exactly one transition.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs mb-6">
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-sky-400 uppercase text-[11px] mb-2 tracking-wider">Formal 5-Tuple Definition</h3>
+                        <ul class="space-y-1.5 text-slate-300">
+                            <li><strong class="text-white">Q (States):</strong> {q0, q1, q2, q3, q4, q_accept, q_reject}</li>
+                            <li><strong class="text-white">Σ (Alphabet):</strong> {LOAD, STORE, ADD, SUB, JMP, R0–R7, Imm(0–255), ',', ';'}</li>
+                            <li><strong class="text-white">q0 (Start State):</strong> Initial idle state ready for instruction opcode.</li>
+                            <li><strong class="text-white">F (Accept States):</strong> {q_accept} reached strictly after the semicolon terminator.</li>
+                            <li><strong class="text-white">q_reject (Dead State):</strong> Sink state for any syntactic violation.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-sky-400 uppercase text-[11px] mb-2 tracking-wider">16-bit Micro-Instruction Control Word</h3>
+                        <div class="font-mono text-xs text-slate-300 space-y-1">
+                            <div>• Bit [15:13]: Opcode (3 bits) - LOAD(001), STORE(010), ADD(011), SUB(100), JMP(101)</div>
+                            <div>• Bit [12:10]: Destination Register (3 bits) - R0(000) to R7(111)</div>
+                            <div>• Bit [9:7]: Source Register (3 bits) - R0(000) to R7(111)</div>
+                            <div>• Bit [6:0]: Immediate Offset / Address (7 bits)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                    <h3 class="font-bold text-slate-300 uppercase text-[11px] mb-3 tracking-wider">Formal State Transition Table δ(q, σ)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs font-mono">
+                            <thead class="bg-slate-800 text-slate-300 border-b border-slate-700">
+                                <tr>
+                                    <th class="p-2">Current State</th>
+                                    <th class="p-2">Input: Opcode</th>
+                                    <th class="p-2">Input: Reg (R0-R7)</th>
+                                    <th class="p-2">Input: Comma (,)</th>
+                                    <th class="p-2">Input: Number/Imm</th>
+                                    <th class="p-2">Input: Semicolon (;)</th>
+                                    <th class="p-2">Invalid Input</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 text-slate-300">
+                                <tr><td class="p-2 font-bold text-sky-400">q0 (Start)</td><td class="p-2">q1</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                <tr><td class="p-2 font-bold text-sky-400">q1 (Opcode)</td><td class="p-2">q_reject</td><td class="p-2">q2</td><td class="p-2">q_reject</td><td class="p-2">q4 (if JMP)</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                <tr><td class="p-2 font-bold text-sky-400">q2 (DestReg)</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q3</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                <tr><td class="p-2 font-bold text-sky-400">q3 (Comma)</td><td class="p-2">q_reject</td><td class="p-2">q4 (Reg)</td><td class="p-2">q_reject</td><td class="p-2">q4 (Imm)</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                <tr><td class="p-2 font-bold text-sky-400">q4 (Src/Imm)</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-emerald-400 font-bold">q_accept</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                <tr><td class="p-2 font-bold text-emerald-400">q_accept</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                <tr><td class="p-2 font-bold text-rose-400">q_reject (Dead)</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 3: COA DEEP DIVE -->
+        <div id="view-pipeline" class="tab-content hidden space-y-6">
+            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 shadow-xl">
+                <h2 class="text-lg font-bold text-white mb-2">COA Module: 5-Stage Pipelining & Hazard Resolution Theory</h2>
+                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                    Pipelining overlaps instruction execution to maximize CPU throughput. Without hazards, a $k$-stage pipeline executing $n$ instructions requires $k + n - 1$ clock cycles, giving an ideal CPI = 1.00.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs mb-6">
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-indigo-400 uppercase text-[11px] mb-2 tracking-wider">1. Data Hazards (RAW)</h3>
+                        <p class="text-slate-300 leading-relaxed">
+                            Occurs when an instruction requires operand data generated by an earlier instruction still in the pipeline. Resolved via hardware forwarding paths (EX-to-EX, MEM-to-EX) or by inserting stall bubbles.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-amber-400 uppercase text-[11px] mb-2 tracking-wider">2. Load-Use Hazard</h3>
+                        <p class="text-slate-300 leading-relaxed">
+                            LOAD instructions produce valid data only after the MEM stage. An immediately following instruction dependent on this data cannot execute in EX without at least 1 stall cycle, even with forwarding.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-purple-400 uppercase text-[11px] mb-2 tracking-wider">3. Speedup & CPI Formulations</h3>
+                        <p class="text-slate-300 leading-relaxed font-mono">
+                            Speedup $S = \frac{n \cdot k}{k + n - 1 + \text{Stalls}}$<br>
+                            $CPI = \frac{\text{Total Cycles}}{n}$<br>
+                            $\text{Throughput} = \frac{n}{\text{Total Cycles}}$
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 4: DAA DEEP DIVE -->
+        <div id="view-dijkstra" class="tab-content hidden space-y-6">
+            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 shadow-xl">
+                <h2 class="text-lg font-bold text-white mb-2">DAA Module: Dijkstra's Algorithm Complexity & Greedy Optimization</h2>
+                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                    Dijkstra's algorithm finds single-source shortest paths in a directed weighted graph with non-negative edge weights $w(u, v) \ge 0$.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs mb-6">
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-emerald-400 uppercase text-[11px] mb-2 tracking-wider">Min-Heap Complexity Proof</h3>
+                        <ul class="space-y-1.5 text-slate-300 leading-relaxed">
+                            <li>• Initializing distances array takes $O(V)$ time.</li>
+                            <li>• Each vertex is inserted and extracted from the priority queue at most once: $V \times O(\log V) = O(V \log V)$.</li>
+                            <li>• Each directed edge is relaxed at most once. Each relaxation decreases key in the heap: $E \times O(\log V) = O(E \log V)$.</li>
+                            <li>• <strong class="text-emerald-300">Total Time Complexity:</strong> $O((V + E) \log V)$.</li>
+                            <li>• <strong class="text-emerald-300">Space Complexity:</strong> $O(V + E)$ for adjacency list and distance structures.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <h3 class="font-bold text-emerald-400 uppercase text-[11px] mb-2 tracking-wider">Greedy Choice Property</h3>
+                        <p class="text-slate-300 leading-relaxed">
+                            At each iteration, extracting the vertex $u$ with the minimal tentative distance $dist[u]$ guarantees that $dist[u]$ is the true shortest path distance, provided edge weights are non-negative. Any alternative path to $u$ via unvisited vertices must pass through some vertex $w$ with $dist[w] \ge dist[u]$, meaning it cannot be shorter.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/90 py-4 px-4 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+            <div>
+                Integrated Micro-Project | <span class="text-slate-300 font-semibold">Gautham Ram S</span> (Reg No: S70)
+            </div>
+            <div class="text-slate-500">
+                Formal Languages & Automata Theory • Computer Organization & Architecture • Design & Analysis of Algorithms
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Script (ES Module) -->
+    <script type="module" src="./src/app.js"></script>
+</body>
+</html>
