@@ -5,8 +5,9 @@ An integrated, production-ready computer science micro-project combining **Forma
 ---
 
 ## 🔗 Live Application & Repository Links
-- **GitHub Repository:** [https://github.com/gauthamram-s70/Integrated-MicroProject-FLAT-COA-DAA](https://github.com/gauthamram-s70/Integrated-MicroProject-FLAT-COA-DAA)
-- **Live Deployed Simulator:** [https://gauthamram-s70.github.io/Integrated-MicroProject-FLAT-COA-DAA/](https://gauthamram-s70.github.io/Integrated-MicroProject-FLAT-COA-DAA/)
+- **GitHub Repository:** [https://github.com/Umgauthamram/Integrated-MicroProject-FLAT-COA-DAA](https://github.com/Umgauthamram/Integrated-MicroProject-FLAT-COA-DAA)
+- **Live Deployed Application (Vercel):** [https://integrated-microproject-flat-coa-daa.vercel.app](https://integrated-microproject-flat-coa-daa.vercel.app)
+- **Live Deployed Application (GitHub Pages):** [https://umgauthamram.github.io/Integrated-MicroProject-FLAT-COA-DAA/](https://umgauthamram.github.io/Integrated-MicroProject-FLAT-COA-DAA/)
 
 ---
 
@@ -129,23 +130,29 @@ An integrated, production-ready computer science micro-project combining **Forma
 
 ```
 Integrated_MicroProject_FLAT_DAA_COA/
+├── .gitignore                         # Git exclusion rules
 ├── README.md                          # Comprehensive documentation
 ├── index.html                         # Web UI entry point
 ├── package.json                       # Dependencies & execution scripts
+├── server.py                          # Integrated Python HTTP & REST API bridge
+├── generate_reports.py                # Academic PDF report generator
 ├── src/
 │   ├── app.js                         # Main app controller
 │   ├── modules/
-│   │   ├── flat_lexer.js              # DFA engine implementation
-│   │   ├── coa_pipeline.js            # 5-stage pipeline simulator
-│   │   └── daa_dijkstra.js            # Dijkstra shortest path graph solver
+│   │   ├── flat_lexer.js              # DFA engine implementation (JavaScript)
+│   │   ├── coa_pipeline.js            # 5-stage pipeline simulator (JavaScript)
+│   │   ├── daa_dijkstra.js            # Dijkstra client bridge & fallback (JavaScript)
+│   │   └── daa_dijkstra.py            # Dijkstra core algorithm & Min-Heap (Python 3)
 │   └── ui/
 │       ├── dfa_visualizer.js          # Interactive state machine renderer
 │       ├── pipeline_chart.js          # Clock cycle pipeline table/Gantt chart
 │       └── graph_visualizer.js        # Graph node & shortest path renderer
 ├── tests/
-│   ├── test_dfa.js                    # Unit tests for DFA validation
-│   ├── test_pipeline.js               # Unit tests for Pipeline & Hazards
-│   └── test_dijkstra.js               # Unit tests for Shortest Path calculation
+│   ├── test_dfa.js                    # Unit tests for DFA validation (Node.js)
+│   ├── test_pipeline.js               # Unit tests for Pipeline & Hazards (Node.js)
+│   ├── test_dijkstra.js               # Unit tests for Shortest Path calculation (Node.js)
+│   └── test_dijkstra.py               # Unit tests for Python Dijkstra & Min-Heap (Python 3)
+├── screenshots/                       # Generated application screenshots
 └── docs/
     ├── FLAT_Report_GauthamRamS.pdf
     ├── DAA_Report_GauthamRamS.pdf
@@ -156,22 +163,23 @@ Integrated_MicroProject_FLAT_DAA_COA/
 
 ## 🚀 How to Run Locally
 
-### Option 1: Direct Browser Launch (No Build Required)
-Simply double-click `index.html` or open it in any modern web browser (Chrome, Edge, Firefox, Safari).
-
-### Option 2: Local HTTP Server
+### Option 1: Python Integrated Server (Recommended)
+Runs the Python HTTP server with the native Python DAA REST API bridge:
 ```bash
-npm install
-npm start
+python server.py
 ```
-Open your browser at `http://localhost:3000`.
+Open your browser at `http://localhost:8000`. The frontend will directly communicate with the Python Dijkstra engine via `/api/dijkstra`.
+
+### Option 2: Direct Browser Launch (Standalone Mode)
+Double-click `index.html` in any modern web browser. The application automatically detects offline/standalone execution and seamlessly executes the integrated client-side engine.
 
 ### Running Unit Test Suites
 ```bash
 npm test
 ```
-Or run individually:
+Or execute Python and Node tests independently:
 ```bash
+python tests/test_dijkstra.py
 node tests/test_dfa.js
 node tests/test_pipeline.js
 node tests/test_dijkstra.js

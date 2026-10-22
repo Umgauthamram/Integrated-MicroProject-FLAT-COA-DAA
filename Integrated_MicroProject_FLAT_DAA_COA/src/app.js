@@ -139,17 +139,18 @@ export class App {
         }
 
         // Trigger redraw if canvas became visible
-        setTimeout(() => {
+        setTimeout(async () => {
             if (viewId === 'dfa' || viewId === 'all') this.dfaVisualizer.render();
             if (viewId === 'dijkstra' || viewId === 'all') {
                 const target = this.dijkstraTargetSelect ? this.dijkstraTargetSelect.value : 'WB_BUS';
-                const res = this.dijkstra.findShortestPath('IF_UNIT', target);
+                const res = await this.dijkstra.findShortestPathAsync('IF_UNIT', target);
                 this.graphVisualizer.render(this.dijkstra, res.path, target);
+                this.graphVisualizer.renderRelaxationSteps(res);
             }
         }, 50);
     }
 
-    executeAll() {
+    async executeAll() {
         const text = this.editor ? this.editor.value : this.currentProgram;
         
         // 1. Run FLAT DFA Lexer
@@ -178,8 +179,8 @@ export class App {
         const pipelineResult = this.pipeline.simulate(validInstructions, this.forwardingEnabled);
         this.pipelineChart.render(pipelineResult);
 
-        // 3. Run DAA Dijkstra Optimal Control Path Analyzer
-        this.runDijkstraOnly(validInstructions);
+        // 3. Run DAA Dijkstra Optimal Control Path Analyzer (via Python API or JS Fallback)
+        await this.runDijkstraOnly(validInstructions);
     }
 
     runLexerOnly() {
@@ -198,14 +199,14 @@ export class App {
         this.pipelineChart.render(pipelineResult);
     }
 
-    runDijkstraOnly(validInstructions = null) {
+    async runDijkstraOnly(validInstructions = null) {
         if (!validInstructions && this.editor) {
             const lexerResult = this.lexer.parseProgram(this.editor.value);
             validInstructions = lexerResult.validInstructions.map(l => l.instruction);
         }
 
         const target = this.dijkstraTargetSelect ? this.dijkstraTargetSelect.value : 'WB_BUS';
-        const pathResult = this.dijkstra.findShortestPath('IF_UNIT', target);
+        const pathResult = await this.dijkstra.findShortestPathAsync('IF_UNIT', target);
 
         this.graphVisualizer.render(this.dijkstra, pathResult.path, target);
         this.graphVisualizer.renderRelaxationSteps(pathResult);

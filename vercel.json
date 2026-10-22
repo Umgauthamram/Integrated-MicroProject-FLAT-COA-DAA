@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/Integrated_MicroProject_FLAT_DAA_COA/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/Integrated_MicroProject_FLAT_DAA_COA/$1"
+    }
+  ]
+}

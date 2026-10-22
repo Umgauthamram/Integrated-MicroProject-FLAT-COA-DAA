@@ -171,8 +171,8 @@ def build_student_info_table(styles):
             Paragraph("<b>Program:</b> B.Tech Computer Science & Engineering", styles['TableCell']),
         ],
         [
-            Paragraph("<b>Live App:</b> https://gauthamram-s70.github.io/Integrated-MicroProject-FLAT-COA-DAA/", styles['TableCell']),
-            Paragraph("<b>Repository:</b> https://github.com/gauthamram-s70/Integrated-MicroProject-FLAT-COA-DAA", styles['TableCell']),
+            Paragraph("<b>Live App:</b> https://integrated-microproject-flat-coa-daa.vercel.app", styles['TableCell']),
+            Paragraph("<b>Repository:</b> https://github.com/Umgauthamram/Integrated-MicroProject-FLAT-COA-DAA", styles['TableCell']),
         ]
     ]
     t = Table(data, colWidths=[250, 254])
