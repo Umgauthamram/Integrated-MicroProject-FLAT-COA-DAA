@@ -1,0 +1,17 @@
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Node dependencies
+node_modules/
+npm-debug.log*
+
+# System & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

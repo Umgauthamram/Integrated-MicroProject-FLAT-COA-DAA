@@ -1,0 +1,33 @@
+{
+  "name": "integrated-microproject-flat-daa-coa",
+  "version": "1.0.0",
+  "description": "Micro-Instruction Lexer, Pipelined Processor Simulator, and Optimal Control Path Analyzer integrating FLAT, DAA, and COA",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "python server.py",
+    "start:node": "npx serve .",
+    "start:py": "python server.py",
+    "dev": "python server.py",
+    "test": "node tests/test_dfa.js && node tests/test_pipeline.js && node tests/test_dijkstra.js && python tests/test_dijkstra.py",
+    "test:dfa": "node tests/test_dfa.js",
+    "test:pipeline": "node tests/test_pipeline.js",
+    "test:dijkstra": "node tests/test_dijkstra.js",
+    "test:py": "python tests/test_dijkstra.py"
+  },
+  "keywords": [
+    "dfa",
+    "automata",
+    "flat",
+    "pipeline",
+    "coa",
+    "hazards",
+    "dijkstra",
+    "daa",
+    "shortest-path",
+    "risc",
+    "microcode"
+  ],
+  "author": "Gautham Ram S",
+  "license": "MIT"
+}

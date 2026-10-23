@@ -208,28 +208,50 @@ export class App {
     }
 
     switchTab(viewId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
         document.querySelectorAll('.nav-tab').forEach(el => {
             el.classList.remove('border-sky-500', 'text-sky-400', 'bg-slate-800/80');
             el.classList.add('border-transparent', 'text-slate-400');
         });
 
-        const activeContent = document.getElementById(`view-${viewId}`);
         const activeTab = document.querySelector(`[data-view="${viewId}"]`);
-
-        if (activeContent) activeContent.classList.remove('hidden');
         if (activeTab) {
             activeTab.classList.remove('border-transparent', 'text-slate-400');
             activeTab.classList.add('border-sky-500', 'text-sky-400', 'bg-slate-800/80');
         }
 
+        const secFlat = document.getElementById('sec-flat');
+        const secCoa = document.getElementById('sec-coa');
+        const secDaa = document.getElementById('sec-daa');
+
+        if (viewId === 'all') {
+            if (secFlat) secFlat.classList.remove('hidden');
+            if (secCoa) secCoa.classList.remove('hidden');
+            if (secDaa) secDaa.classList.remove('hidden');
+        } else if (viewId === 'dfa') {
+            if (secFlat) secFlat.classList.remove('hidden');
+            if (secCoa) secCoa.classList.add('hidden');
+            if (secDaa) secDaa.classList.add('hidden');
+        } else if (viewId === 'pipeline') {
+            if (secFlat) secFlat.classList.add('hidden');
+            if (secCoa) secCoa.classList.remove('hidden');
+            if (secDaa) secDaa.classList.add('hidden');
+        } else if (viewId === 'dijkstra') {
+            if (secFlat) secFlat.classList.add('hidden');
+            if (secCoa) secCoa.classList.add('hidden');
+            if (secDaa) secDaa.classList.remove('hidden');
+        }
+
         setTimeout(async () => {
-            if (viewId === 'dfa' || viewId === 'all') this.dfaVisualizer.render();
+            if (viewId === 'dfa' || viewId === 'all') {
+                if (this.dfaVisualizer) this.dfaVisualizer.render();
+            }
             if (viewId === 'dijkstra' || viewId === 'all') {
                 const target = this.dijkstraTargetSelect ? this.dijkstraTargetSelect.value : 'WB_BUS';
                 const res = await this.dijkstra.findShortestPathAsync('IF_UNIT', target);
-                this.graphVisualizer.render(this.dijkstra, res.path, target);
-                this.graphVisualizer.renderRelaxationSteps(res);
+                if (this.graphVisualizer) {
+                    this.graphVisualizer.render(this.dijkstra, res.path, target);
+                    this.graphVisualizer.renderRelaxationSteps(res);
+                }
             }
         }, 50);
     }

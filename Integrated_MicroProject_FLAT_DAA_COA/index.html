@@ -145,235 +145,244 @@
             </div>
         </section>
 
-        <!-- VIEW 1: UNIFIED ALL-IN-ONE SIMULATOR -->
-        <div id="view-all" class="tab-content space-y-6">
+        <!-- VIEW CONTAINER WITH SUBJECT SECTIONS -->
+        <div id="views-container" class="space-y-8">
             
-            <!-- Section 1: FLAT DFA State Machine & Control Words -->
-            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
-                <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
-                    <div>
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <span class="w-6 h-6 rounded bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
-                            FLAT Module: Deterministic Finite Automaton (DFA) Lexical Analyzer
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">
-                            Formal 5-tuple: $M = (Q, \Sigma, \delta, q_0, F)$, with $Q=\{q_0, q_1, q_2, q_3, q_4, q_{accept}, q_{reject}\}$ and $F=\{q_{accept}\}$.
-                        </p>
-                    </div>
-                    <button id="btn-run-dfa" class="text-xs bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 px-3 py-1 rounded transition">
-                        Step DFA
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-                    <!-- DFA State Diagram Canvas -->
-                    <div class="lg:col-span-7 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col items-center justify-center">
-                        <div class="text-[11px] text-slate-400 w-full mb-1 flex items-center justify-between">
-                            <span>Interactive DFA State Transition Diagram</span>
-                            <span class="text-slate-500">Node Glowing indicates active state</span>
+            <!-- SECTION 1: FLAT DFA State Machine, Token Stream & Formal Theory -->
+            <div id="sec-flat" class="subject-section space-y-6">
+                <!-- Interactive DFA Card -->
+                <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                    <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
+                        <div>
+                            <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-6 h-6 rounded bg-sky-500/20 text-sky-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
+                                FLAT Module: Deterministic Finite Automaton (DFA) Lexical Analyzer
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-0.5">
+                                Formal 5-tuple: $M = (Q, \Sigma, \delta, q_0, F)$, with $Q=\{q_0, q_1, q_2, q_3, q_4, q_{accept}, q_{reject}\}$ and $F=\{q_{accept}\}$.
+                            </p>
                         </div>
-                        <canvas id="dfa-canvas" width="820" height="320" class="w-full h-auto max-h-[300px]"></canvas>
+                        <button id="btn-run-dfa" class="text-xs bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 px-3 py-1 rounded transition">
+                            Step DFA
+                        </button>
                     </div>
 
-                    <!-- DFA Transition Table -->
-                    <div class="lg:col-span-5 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col">
-                        <div class="text-[11px] text-slate-400 mb-2 font-semibold">Parsed Tokens & Control Words</div>
-                        <div id="dfa-table-container" class="flex-1 max-h-[290px] overflow-y-auto"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section 2: COA 5-Stage Pipeline Simulator -->
-            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
-                <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
-                    <div>
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <span class="w-6 h-6 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
-                            COA Module: 5-Stage RISC CPU Pipeline Simulator with Hazard Detection
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">
-                            Simulates Fetch (IF), Decode (ID), Execute (EX), Memory (MEM), and Write-Back (WB) with RAW and Control Hazard resolution.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Pipeline Performance Metrics Cards -->
-                <div id="pipeline-metrics-container"></div>
-
-                <!-- Gantt Chart Cycle Grid -->
-                <div id="pipeline-table-container" class="mb-4"></div>
-
-                <!-- Hazard Diagnostics Log -->
-                <div id="hazard-log-container"></div>
-            </section>
-
-            <!-- Section 3: DAA Dijkstra Optimal Control Path Routing -->
-            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 border-b border-slate-800/80 pb-3">
-                    <div>
-                        <h2 class="text-sm font-bold text-white flex items-center gap-2">
-                            <span class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">3</span>
-                            DAA Module: Optimal Control Path Routing via Dijkstra's Algorithm
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-0.5">
-                            Directed Weighted Graph modeling CPU Functional Units. Latency minimized using custom Min-Heap: $O((V+E)\log V)$.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2 text-xs">
-                        <label for="dijkstra-target-select" class="text-slate-400 font-medium">Route Target Unit:</label>
-                        <select id="dijkstra-target-select" class="bg-slate-800 border border-slate-700 text-slate-200 rounded-lg px-2.5 py-1 text-xs focus:ring-1 focus:ring-emerald-500 outline-none">
-                            <option value="WB_BUS">Write-Back Bus (WB_BUS) - ADD / SUB / LOAD</option>
-                            <option value="DATA_MEM">Data Memory (DATA_MEM) - STORE</option>
-                            <option value="BRANCH_UNIT">Branch Unit (BRANCH_UNIT) - JMP</option>
-                            <option value="ALU">Arithmetic Logic Unit (ALU)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-                    <!-- Graph Canvas -->
-                    <div class="lg:col-span-6 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col items-center justify-center">
-                        <div class="text-[11px] text-slate-400 w-full mb-1 flex items-center justify-between">
-                            <span>Hardware Interconnect Directed Graph</span>
-                            <span class="text-emerald-400 font-semibold">Green Glow: Optimal Route</span>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        <!-- DFA State Diagram Canvas -->
+                        <div class="lg:col-span-7 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col items-center justify-center">
+                            <div class="text-[11px] text-slate-400 w-full mb-1 flex items-center justify-between">
+                                <span>Interactive DFA State Transition Diagram</span>
+                                <span class="text-slate-500">Node Glowing indicates active state</span>
+                            </div>
+                            <canvas id="dfa-canvas" width="820" height="320" class="w-full h-auto max-h-[300px]"></canvas>
                         </div>
-                        <canvas id="graph-canvas" width="820" height="320" class="w-full h-auto max-h-[300px]"></canvas>
-                    </div>
 
-                    <!-- Step-by-Step Relaxation Steps -->
-                    <div class="lg:col-span-6 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col">
-                        <div class="text-[11px] text-slate-400 mb-2 font-semibold">Dijkstra Min-Heap Relaxation Trace</div>
-                        <div id="dijkstra-steps-container" class="flex-1 max-h-[290px] overflow-y-auto"></div>
-                    </div>
-                </div>
-            </section>
-
-        </div>
-
-        <!-- VIEW 2: FLAT DEEP DIVE -->
-        <div id="view-dfa" class="tab-content hidden space-y-6">
-            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 shadow-xl">
-                <h2 class="text-lg font-bold text-white mb-2">FLAT Module: Deterministic Finite Automaton (DFA) Specification</h2>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                    In Formal Languages and Automata Theory, a DFA is a 5-tuple $M = (Q, \Sigma, \delta, q_0, F)$ where for every state and input symbol, there is exactly one transition.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs mb-6">
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-sky-400 uppercase text-[11px] mb-2 tracking-wider">Formal 5-Tuple Definition</h3>
-                        <ul class="space-y-1.5 text-slate-300">
-                            <li><strong class="text-white">Q (States):</strong> {q0, q1, q2, q3, q4, q_accept, q_reject}</li>
-                            <li><strong class="text-white">Σ (Alphabet):</strong> {LOAD, STORE, ADD, SUB, JMP, R0–R7, Imm(0–255), ',', ';'}</li>
-                            <li><strong class="text-white">q0 (Start State):</strong> Initial idle state ready for instruction opcode.</li>
-                            <li><strong class="text-white">F (Accept States):</strong> {q_accept} reached strictly after the semicolon terminator.</li>
-                            <li><strong class="text-white">q_reject (Dead State):</strong> Sink state for any syntactic violation.</li>
-                        </ul>
-                    </div>
-
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-sky-400 uppercase text-[11px] mb-2 tracking-wider">16-bit Micro-Instruction Control Word</h3>
-                        <div class="font-mono text-xs text-slate-300 space-y-1">
-                            <div>• Bit [15:13]: Opcode (3 bits) - LOAD(001), STORE(010), ADD(011), SUB(100), JMP(101)</div>
-                            <div>• Bit [12:10]: Destination Register (3 bits) - R0(000) to R7(111)</div>
-                            <div>• Bit [9:7]: Source Register (3 bits) - R0(000) to R7(111)</div>
-                            <div>• Bit [6:0]: Immediate Offset / Address (7 bits)</div>
+                        <!-- DFA Transition Table -->
+                        <div class="lg:col-span-5 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col">
+                            <div class="text-[11px] text-slate-400 mb-2 font-semibold">Parsed Tokens & Control Words</div>
+                            <div id="dfa-table-container" class="flex-1 max-h-[290px] overflow-y-auto"></div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                    <h3 class="font-bold text-slate-300 uppercase text-[11px] mb-3 tracking-wider">Formal State Transition Table δ(q, σ)</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs font-mono">
-                            <thead class="bg-slate-800 text-slate-300 border-b border-slate-700">
-                                <tr>
-                                    <th class="p-2">Current State</th>
-                                    <th class="p-2">Input: Opcode</th>
-                                    <th class="p-2">Input: Reg (R0-R7)</th>
-                                    <th class="p-2">Input: Comma (,)</th>
-                                    <th class="p-2">Input: Number/Imm</th>
-                                    <th class="p-2">Input: Semicolon (;)</th>
-                                    <th class="p-2">Invalid Input</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-800 text-slate-300">
-                                <tr><td class="p-2 font-bold text-sky-400">q0 (Start)</td><td class="p-2">q1</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                                <tr><td class="p-2 font-bold text-sky-400">q1 (Opcode)</td><td class="p-2">q_reject</td><td class="p-2">q2</td><td class="p-2">q_reject</td><td class="p-2">q4 (if JMP)</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                                <tr><td class="p-2 font-bold text-sky-400">q2 (DestReg)</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q3</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                                <tr><td class="p-2 font-bold text-sky-400">q3 (Comma)</td><td class="p-2">q_reject</td><td class="p-2">q4 (Reg)</td><td class="p-2">q_reject</td><td class="p-2">q4 (Imm)</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                                <tr><td class="p-2 font-bold text-sky-400">q4 (Src/Imm)</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-emerald-400 font-bold">q_accept</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                                <tr><td class="p-2 font-bold text-emerald-400">q_accept</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                                <tr><td class="p-2 font-bold text-rose-400">q_reject (Dead)</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-        </div>
+                <!-- FLAT Deep Dive Formal Specification -->
+                <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-sky-400 font-mono">🔤</span> Formal Language Specification & Transition Table $\delta(q, \sigma)$
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        In Formal Languages and Automata Theory (Module 1), a DFA guarantees $O(N)$ linear-time deterministic lexical validation without backtracking. Below are the formal components:
+                    </p>
 
-        <!-- VIEW 3: COA DEEP DIVE -->
-        <div id="view-pipeline" class="tab-content hidden space-y-6">
-            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 shadow-xl">
-                <h2 class="text-lg font-bold text-white mb-2">COA Module: 5-Stage Pipelining & Hazard Resolution Theory</h2>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                    Pipelining overlaps instruction execution to maximize CPU throughput. Without hazards, a $k$-stage pipeline executing $n$ instructions requires $k + n - 1$ clock cycles, giving an ideal CPI = 1.00.
-                </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mb-4">
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-sky-400 uppercase text-[11px] mb-2 tracking-wider">Formal 5-Tuple Definition</h4>
+                            <ul class="space-y-1.5 text-slate-300">
+                                <li><strong class="text-white">Q (States):</strong> {q0, q1, q2, q3, q4, q_accept, q_reject}</li>
+                                <li><strong class="text-white">Σ (Alphabet):</strong> {LOAD, STORE, ADD, SUB, JMP, R0–R7, Imm(0–255), ',', ';'}</li>
+                                <li><strong class="text-white">q0 (Start State):</strong> Initial idle state ready for instruction opcode.</li>
+                                <li><strong class="text-white">F (Accept States):</strong> {q_accept} reached strictly after the semicolon terminator.</li>
+                                <li><strong class="text-white">q_reject (Dead State):</strong> Sink state for any syntactic violation.</li>
+                            </ul>
+                        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs mb-6">
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-indigo-400 uppercase text-[11px] mb-2 tracking-wider">1. Data Hazards (RAW)</h3>
-                        <p class="text-slate-300 leading-relaxed">
-                            Occurs when an instruction requires operand data generated by an earlier instruction still in the pipeline. Resolved via hardware forwarding paths (EX-to-EX, MEM-to-EX) or by inserting stall bubbles.
-                        </p>
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-sky-400 uppercase text-[11px] mb-2 tracking-wider">16-bit Micro-Instruction Control Word</h4>
+                            <div class="font-mono text-xs text-slate-300 space-y-1">
+                                <div>• Bit [15:13]: Opcode (3 bits) - LOAD(001), STORE(010), ADD(011), SUB(100), JMP(101)</div>
+                                <div>• Bit [12:10]: Destination Register (3 bits) - R0(000) to R7(111)</div>
+                                <div>• Bit [9:7]: Source Register (3 bits) - R0(000) to R7(111)</div>
+                                <div>• Bit [6:0]: Immediate Offset / Address (7 bits)</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-amber-400 uppercase text-[11px] mb-2 tracking-wider">2. Load-Use Hazard</h3>
-                        <p class="text-slate-300 leading-relaxed">
-                            LOAD instructions produce valid data only after the MEM stage. An immediately following instruction dependent on this data cannot execute in EX without at least 1 stall cycle, even with forwarding.
-                        </p>
+                        <h4 class="font-bold text-slate-300 uppercase text-[11px] mb-2 tracking-wider">Complete State Transition Table $\delta(q, \sigma)$</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs font-mono">
+                                <thead class="bg-slate-800 text-slate-300 border-b border-slate-700">
+                                    <tr>
+                                        <th class="p-2">Current State</th>
+                                        <th class="p-2">Input: Opcode</th>
+                                        <th class="p-2">Input: Reg (R0-R7)</th>
+                                        <th class="p-2">Input: Comma (,)</th>
+                                        <th class="p-2">Input: Number/Imm</th>
+                                        <th class="p-2">Input: Semicolon (;)</th>
+                                        <th class="p-2">Invalid Input</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800 text-slate-300">
+                                    <tr><td class="p-2 font-bold text-sky-400">q0 (Start)</td><td class="p-2">q1</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                    <tr><td class="p-2 font-bold text-sky-400">q1 (Opcode)</td><td class="p-2">q_reject</td><td class="p-2">q2</td><td class="p-2">q_reject</td><td class="p-2">q4 (if JMP)</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                    <tr><td class="p-2 font-bold text-sky-400">q2 (DestReg)</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q3</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                    <tr><td class="p-2 font-bold text-sky-400">q3 (Comma)</td><td class="p-2">q_reject</td><td class="p-2">q4 (Reg)</td><td class="p-2">q_reject</td><td class="p-2">q4 (Imm)</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                    <tr><td class="p-2 font-bold text-sky-400">q4 (Src/Imm)</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-emerald-400 font-bold">q_accept</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                    <tr><td class="p-2 font-bold text-emerald-400">q_accept</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                    <tr><td class="p-2 font-bold text-rose-400">q_reject (Dead)</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td><td class="p-2 text-rose-400">q_reject</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SECTION 2: COA 5-Stage Pipeline Simulator, Hazard Log & Architectural Theory -->
+            <div id="sec-coa" class="subject-section space-y-6">
+                <!-- Interactive Pipeline Card -->
+                <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                    <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
+                        <div>
+                            <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-6 h-6 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
+                                COA Module: 5-Stage RISC CPU Pipeline Simulator with Hazard Detection
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-0.5">
+                                Simulates Fetch (IF), Decode (ID), Execute (EX), Memory (MEM), and Write-Back (WB) with RAW and Control Hazard resolution.
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-purple-400 uppercase text-[11px] mb-2 tracking-wider">3. Speedup & CPI Formulations</h3>
-                        <p class="text-slate-300 leading-relaxed font-mono">
-                            Speedup $S = \frac{n \cdot k}{k + n - 1 + \text{Stalls}}$<br>
-                            $CPI = \frac{\text{Total Cycles}}{n}$<br>
-                            $\text{Throughput} = \frac{n}{\text{Total Cycles}}$
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </div>
+                    <!-- Pipeline Performance Metrics Cards -->
+                    <div id="pipeline-metrics-container"></div>
 
-        <!-- VIEW 4: DAA DEEP DIVE -->
-        <div id="view-dijkstra" class="tab-content hidden space-y-6">
-            <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 shadow-xl">
-                <h2 class="text-lg font-bold text-white mb-2">DAA Module: Dijkstra's Algorithm Complexity & Greedy Optimization</h2>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-                    Dijkstra's algorithm finds single-source shortest paths in a directed weighted graph with non-negative edge weights $w(u, v) \ge 0$.
-                </p>
+                    <!-- Gantt Chart Cycle Grid -->
+                    <div id="pipeline-table-container" class="mb-4"></div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs mb-6">
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-emerald-400 uppercase text-[11px] mb-2 tracking-wider">Min-Heap Complexity Proof</h3>
-                        <ul class="space-y-1.5 text-slate-300 leading-relaxed">
-                            <li>• Initializing distances array takes $O(V)$ time.</li>
-                            <li>• Each vertex is inserted and extracted from the priority queue at most once: $V \times O(\log V) = O(V \log V)$.</li>
-                            <li>• Each directed edge is relaxed at most once. Each relaxation decreases key in the heap: $E \times O(\log V) = O(E \log V)$.</li>
-                            <li>• <strong class="text-emerald-300">Total Time Complexity:</strong> $O((V + E) \log V)$.</li>
-                            <li>• <strong class="text-emerald-300">Space Complexity:</strong> $O(V + E)$ for adjacency list and distance structures.</li>
-                        </ul>
+                    <!-- Hazard Diagnostics Log -->
+                    <div id="hazard-log-container"></div>
+                </section>
+
+                <!-- COA Deep Dive Theory -->
+                <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-indigo-400 font-mono">⏱️</span> 5-Stage Pipeline Architectural Principles & Formulations
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        Computer Organization and Architecture (Module 2) demonstrates how instruction-level parallelism overlaps hardware stages to approach an optimal CPI = 1.00.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-indigo-400 uppercase text-[11px] mb-2 tracking-wider">1. Data Hazards (RAW)</h4>
+                            <p class="text-slate-300 leading-relaxed">
+                                Occurs when an instruction requires operand data generated by an earlier instruction still in the pipeline. Resolved via hardware forwarding paths (EX-to-EX, MEM-to-EX) or by inserting stall bubbles.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-amber-400 uppercase text-[11px] mb-2 tracking-wider">2. Load-Use Hazard</h4>
+                            <p class="text-slate-300 leading-relaxed">
+                                LOAD instructions produce valid data only after the MEM stage. An immediately following instruction dependent on this data cannot execute in EX without at least 1 stall cycle, even with forwarding.
+                            </p>
+                        </div>
+
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-purple-400 uppercase text-[11px] mb-2 tracking-wider">3. Speedup & CPI Formulations</h4>
+                            <p class="text-slate-300 leading-relaxed font-mono">
+                                Speedup $S = \frac{n \cdot k}{k + n - 1 + \text{Stalls}}$<br>
+                                $CPI = \frac{\text{Total Cycles}}{n}$<br>
+                                $\text{Throughput} = \frac{n}{\text{Total Cycles}}$
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SECTION 3: DAA Dijkstra Optimal Control Path Routing & Graph Analysis -->
+            <div id="sec-daa" class="subject-section space-y-6">
+                <!-- Interactive Dijkstra Card -->
+                <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 border-b border-slate-800/80 pb-3">
+                        <div>
+                            <h2 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">3</span>
+                                DAA Module: Optimal Control Path Routing via Dijkstra's Algorithm
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-0.5">
+                                Directed Weighted Graph modeling CPU Functional Units. Latency minimized using custom Min-Heap: $O((V+E)\log V)$.
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs">
+                            <label for="dijkstra-target-select" class="text-slate-400 font-medium">Route Target Unit:</label>
+                            <select id="dijkstra-target-select" class="bg-slate-800 border border-slate-700 text-slate-200 rounded-lg px-2.5 py-1 text-xs focus:ring-1 focus:ring-emerald-500 outline-none">
+                                <option value="WB_BUS">Write-Back Bus (WB_BUS) - ADD / SUB / LOAD</option>
+                                <option value="DATA_MEM">Data Memory (DATA_MEM) - STORE</option>
+                                <option value="BRANCH_UNIT">Branch Unit (BRANCH_UNIT) - JMP</option>
+                                <option value="ALU">Arithmetic Logic Unit (ALU)</option>
+                            </select>
+                        </div>
                     </div>
 
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <h3 class="font-bold text-emerald-400 uppercase text-[11px] mb-2 tracking-wider">Greedy Choice Property</h3>
-                        <p class="text-slate-300 leading-relaxed">
-                            At each iteration, extracting the vertex $u$ with the minimal tentative distance $dist[u]$ guarantees that $dist[u]$ is the true shortest path distance, provided edge weights are non-negative. Any alternative path to $u$ via unvisited vertices must pass through some vertex $w$ with $dist[w] \ge dist[u]$, meaning it cannot be shorter.
-                        </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                        <!-- Graph Canvas -->
+                        <div class="lg:col-span-6 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col items-center justify-center">
+                            <div class="text-[11px] text-slate-400 w-full mb-1 flex items-center justify-between">
+                                <span>Hardware Interconnect Directed Graph</span>
+                                <span class="text-emerald-400 font-semibold">Green Glow: Optimal Route</span>
+                            </div>
+                            <canvas id="graph-canvas" width="820" height="320" class="w-full h-auto max-h-[300px]"></canvas>
+                        </div>
+
+                        <!-- Step-by-Step Relaxation Steps -->
+                        <div class="lg:col-span-6 bg-slate-950/70 border border-slate-800/80 rounded-lg p-3 flex flex-col">
+                            <div class="text-[11px] text-slate-400 mb-2 font-semibold">Dijkstra Min-Heap Relaxation Trace</div>
+                            <div id="dijkstra-steps-container" class="flex-1 max-h-[290px] overflow-y-auto"></div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+
+                <!-- DAA Deep Dive Complexity Proof -->
+                <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 shadow-xl">
+                    <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-emerald-400 font-mono">🧭</span> Greedy Choice Property & Min-Heap Asymptotic Complexity
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        Design and Analysis of Algorithms (Modules 1 & 2) establishes the theoretical guarantees of Dijkstra's single-source shortest path algorithm on non-negative directed weighted graphs.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-emerald-400 uppercase text-[11px] mb-2 tracking-wider">Min-Heap Complexity Proof</h4>
+                            <ul class="space-y-1.5 text-slate-300 leading-relaxed">
+                                <li>• Initializing distances array takes $O(V)$ time.</li>
+                                <li>• Each vertex is inserted and extracted from the priority queue at most once: $V \times O(\log V) = O(V \log V)$.</li>
+                                <li>• Each directed edge is relaxed at most once. Each relaxation decreases key in the heap: $E \times O(\log V) = O(E \log V)$.</li>
+                                <li>• <strong class="text-emerald-300">Total Time Complexity:</strong> $O((V + E) \log V)$.</li>
+                                <li>• <strong class="text-emerald-300">Space Complexity:</strong> $O(V + E)$ for adjacency list and distance structures.</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-950 p-4 rounded-lg border border-slate-800">
+                            <h4 class="font-bold text-emerald-400 uppercase text-[11px] mb-2 tracking-wider">Greedy Choice Property</h4>
+                            <p class="text-slate-300 leading-relaxed">
+                                At each iteration, extracting the vertex $u$ with the minimal tentative distance $dist[u]$ guarantees that $dist[u]$ is the true shortest path distance, provided edge weights are non-negative. Any alternative path to $u$ via unvisited vertices must pass through some vertex $w$ with $dist[w] \ge dist[u]$, meaning it cannot be shorter.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
         </div>
 
     </main>
