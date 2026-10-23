@@ -87,10 +87,6 @@ flat_sections = [
         "Hopcroft, J. E., Motwani, R., & Ullman, J. D. (2006). Introduction to Automata Theory, Languages, and Computation (3rd ed.). Pearson Education.",
         "Sipser, M. (2013). Introduction to the Theory of Computation (3rd ed.). Cengage Learning.",
         "Patterson, D. A., & Hennessy, J. L. (2020). Computer Organization and Design: The Hardware/Software Interface (RISC-V ed.). Morgan Kaufmann."
-    ]),
-    (11, "Plagiarism Report", [
-        "I hereby declare that this microproject report titled 'Deterministic Finite Automaton (DFA) Lexical Analyzer and Micro-Instruction Control Word Generator' is my original academic work. All theoretical formulations, state machine designs, simulation scripts, and analyses were conducted independently. External academic literature and foundational textbooks cited herein have been thoroughly referenced in accordance with academic integrity guidelines.",
-        "Originality Index: 92% Unique Content | Similarity Score: < 8% (Standard technical terminology and formal definitions)."
     ])
 ]
 
@@ -189,10 +185,6 @@ coa_sections = [
         "Jouppi, N. P., & Wall, D. W. (1989). Available instruction-level parallelism for superscalar and superpipelined machines. Proceedings of the 3rd International Conference on Architectural Support for Programming Languages and Operating Systems (ASPLOS-III), 272–282. https://doi.org/10.1145/70082.68198",
         "Patterson, D. A., & Hennessy, J. L. (2020). Computer Organization and Design: The Hardware/Software Interface (RISC-V ed.). Morgan Kaufmann.",
         "Mano, M. M. (2016). Computer System Architecture (3rd ed.). Pearson."
-    ]),
-    (11, "Plagiarism Report", [
-        "I hereby declare that this microproject report titled '5-Stage RISC CPU Pipeline Simulator with RAW Hazard Resolution and Data Forwarding' is my original academic work. All theoretical models, clock cycle calculations, hazard detection logic, simulation code, and benchmark evaluations were conducted independently.",
-        "Originality Index: 91% Unique Content | Similarity Score: < 9% (Standard architectural terminology and mathematical formulas)."
     ])
 ]
 
@@ -290,10 +282,6 @@ daa_sections = [
         "Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2022). Introduction to Algorithms (4th ed.). MIT Press.",
         "Kleinberg, J., & Tardos, É. (2006). Algorithm Design. Pearson Education.",
         "Sedgewick, R., & Wayne, K. (2011). Algorithms (4th ed.). Addison-Wesley Professional."
-    ]),
-    (11, "Plagiarism Report", [
-        "I hereby declare that this microproject report titled 'Optimal Control Path Routing across CPU Functional Units via Dijkstra's Shortest Path Algorithm' is my original academic work. All algorithmic models, graph definitions, step-by-step relaxation traces, and complexity proofs were developed and verified independently.",
-        "Originality Index: 93% Unique Content | Similarity Score: < 7% (Standard algorithmic notation and foundational theorems)."
     ])
 ]
 

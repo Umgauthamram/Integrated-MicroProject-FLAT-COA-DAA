@@ -86,23 +86,17 @@ def create_report_document(subject_title, subject_code_name, project_title, sect
     r_title.font.bold = True
     r_title.font.color.rgb = NAVY
 
-    # University Seal Image
+    # University Seal Image (Placed directly after the title)
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    seal_path = os.path.join(base_dir, 'word', 'media', 'image1.png')
-    template_docx = os.path.join(base_dir, 'Principles of Science Microproject - Wi-Fi Signal Attenuation.docx')
+    seal_path = os.path.join(base_dir, 'alliance_seal.png')
 
-    if not os.path.exists(seal_path) and os.path.exists(template_docx):
-        import zipfile
-        with zipfile.ZipFile(template_docx, 'r') as z:
-            z.extract('word/media/image1.png', base_dir)
     if os.path.exists(seal_path):
         p_seal = doc.add_paragraph()
         p_seal.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p_seal.paragraph_format.space_before = Pt(10)
+        p_seal.paragraph_format.space_before = Pt(12)
         p_seal.paragraph_format.space_after = Pt(20)
-        doc.add_picture(seal_path, width=Inches(2.1))
-        p_seal_img = doc.paragraphs[-1]
-        p_seal_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_seal_run = p_seal.add_run()
+        p_seal_run.add_picture(seal_path, width=Inches(2.2))
 
     # Submission Metadata
     p_meta = doc.add_paragraph()
