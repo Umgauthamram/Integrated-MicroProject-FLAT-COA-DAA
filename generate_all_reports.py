@@ -322,34 +322,34 @@ def generate_all():
             "subject_title": "Formal Languages and Automata Theory",
             "subject_code_name": "FLAT",
             "project_title": "Deterministic Finite Automaton (DFA) Lexical Analyzer and Micro-Instruction Control Word Generator",
+            "mentor_name": "Vaibhav Giri",
             "sections": flat_sections,
             "table": flat_table,
             "screenshot": os.path.join(SCREENSHOTS_DIR, "flat_dfa_module.png"),
             "docx_name": "FLAT_Report.docx",
-            "pdf_name": "FLAT_Report.pdf",
-            "alt_pdf": "FLAT_Report_GauthamRamS.pdf"
+            "pdf_name": "FLAT_Report.pdf"
         },
         {
             "subject_title": "Computer Organization and Architecture",
             "subject_code_name": "COA",
             "project_title": "5-Stage RISC CPU Pipeline Simulator with RAW Hazard Resolution and Data Forwarding",
+            "mentor_name": "Moufia Justin",
             "sections": coa_sections,
             "table": coa_table,
             "screenshot": os.path.join(SCREENSHOTS_DIR, "coa_pipeline_module.png"),
             "docx_name": "COA_Report.docx",
-            "pdf_name": "COA_Report.pdf",
-            "alt_pdf": "COA_Report_GauthamRamS.pdf"
+            "pdf_name": "COA_Report.pdf"
         },
         {
             "subject_title": "Design and Analysis of Algorithms",
             "subject_code_name": "DAA",
             "project_title": "Optimal Control Path Routing across CPU Functional Units via Dijkstra's Shortest Path Algorithm",
+            "mentor_name": "Simran Kumari",
             "sections": daa_sections,
             "table": daa_table,
             "screenshot": os.path.join(SCREENSHOTS_DIR, "daa_dijkstra_module.png"),
             "docx_name": "DAA_Report.docx",
-            "pdf_name": "DAA_Report.pdf",
-            "alt_pdf": "DAA_Report_GauthamRamS.pdf"
+            "pdf_name": "DAA_Report.pdf"
         }
     ]
 
@@ -360,16 +360,16 @@ def generate_all():
     for rep in reports:
         docx_path = os.path.join(DOCS_DIR, rep["docx_name"])
         pdf_path = os.path.join(DOCS_DIR, rep["pdf_name"])
-        alt_pdf_path = os.path.join(DOCS_DIR, rep["alt_pdf"])
 
-        print(f"\nBuilding {rep['subject_code_name']} Document: {rep['docx_name']}...")
+        print(f"\nBuilding {rep['subject_code_name']} Document: {rep['docx_name']} (Mentor: {rep['mentor_name']})...")
         doc = create_report_document(
             subject_title=rep["subject_title"],
             subject_code_name=rep["subject_code_name"],
             project_title=rep["project_title"],
             sections_data=rep["sections"],
             table_data=rep["table"],
-            screenshot_path=rep["screenshot"]
+            screenshot_path=rep["screenshot"],
+            mentor_name=rep["mentor_name"]
         )
         doc.save(docx_path)
         print(f"  -> Saved DOCX: {docx_path} ({os.path.getsize(docx_path)} bytes)")
@@ -377,14 +377,8 @@ def generate_all():
         # Convert to PDF using Microsoft Word COM
         print(f"Converting {rep['docx_name']} to PDF via Word Automation...")
         convert_docx_to_pdf(docx_path, pdf_path)
-        
-        # Also copy / save as alternate name
-        if os.path.exists(pdf_path):
-            import shutil
-            shutil.copy2(pdf_path, alt_pdf_path)
-            print(f"  -> Saved Alt PDF: {alt_pdf_path}")
 
-    print("\nAll 3 academic reports successfully generated in /docs!")
+    print("\nAll 3 academic reports successfully updated in /docs!")
 
 if __name__ == "__main__":
     generate_all()

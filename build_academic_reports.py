@@ -38,7 +38,7 @@ def set_cell_margins(cell, top=100, bottom=100, left=150, right=150):
         tcMar.append(node)
     tcPr.append(tcMar)
 
-def create_report_document(subject_title, subject_code_name, project_title, sections_data, table_data, screenshot_path):
+def create_report_document(subject_title, subject_code_name, project_title, sections_data, table_data, screenshot_path, mentor_name="Faculty Mentor"):
     doc = docx.Document()
 
     # Set 1-inch margins
@@ -87,7 +87,14 @@ def create_report_document(subject_title, subject_code_name, project_title, sect
     r_title.font.color.rgb = NAVY
 
     # University Seal Image
-    seal_path = os.path.abspath(r'word\media\image1.png')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    seal_path = os.path.join(base_dir, 'word', 'media', 'image1.png')
+    template_docx = os.path.join(base_dir, 'Principles of Science Microproject - Wi-Fi Signal Attenuation.docx')
+
+    if not os.path.exists(seal_path) and os.path.exists(template_docx):
+        import zipfile
+        with zipfile.ZipFile(template_docx, 'r') as z:
+            z.extract('word/media/image1.png', base_dir)
     if os.path.exists(seal_path):
         p_seal = doc.add_paragraph()
         p_seal.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -108,7 +115,7 @@ def create_report_document(subject_title, subject_code_name, project_title, sect
         ("Programme", "B.Tech. (Computer Science & Engineering)"),
         ("Institution", "Kalvium | Alliance University"),
         ("Squad", "70"),
-        ("Course Faculty", "Mohamed Fayiz K"),
+        ("Course Faculty / Mentor", mentor_name),
         ("Submission Date", "October 2026")
     ]
     for label, val in meta_items:

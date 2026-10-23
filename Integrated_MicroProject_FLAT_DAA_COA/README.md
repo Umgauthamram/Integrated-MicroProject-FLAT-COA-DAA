@@ -11,12 +11,16 @@ An integrated, production-ready computer science micro-project combining **Forma
 
 ---
 
-## 🎓 Student Profile
-- **Name:** Gautham Ram S
+## 🎓 Student & Course Faculty Details
+- **Student Name:** Gautham Ram S
 - **Registration / Roll ID:** S70
 - **Email:** gautham.ram.s70@kalvium.community
 - **Degree:** B.Tech Computer Science and Engineering
-- **Institution:** Kalvium Community
+- **Institution:** Kalvium Community | Alliance University
+- **Course Mentors / Faculty:**
+  - **DAA Mentor:** Simran Kumari
+  - **FLAT Mentor:** Vaibhav Giri
+  - **COA Mentor:** Moufia Justin
 
 ---
 

@@ -7,12 +7,16 @@ An integrated CS micro-project combining **Formal Languages & Automata Theory (F
 - **Live Deployed Application (Vercel):** [https://integratedmicroproject.vercel.app/](https://integratedmicroproject.vercel.app/)
 - **Live Deployed Application (GitHub Pages):** [https://umgauthamram.github.io/Integrated-MicroProject-FLAT-COA-DAA/](https://umgauthamram.github.io/Integrated-MicroProject-FLAT-COA-DAA/)
 
-## 🎓 Student Details
-- **Name:** Gautham Ram S
+## 🎓 Student & Course Faculty Details
+- **Student Name:** Gautham Ram S
 - **Roll / Reg ID:** S70
 - **Email:** gautham.ram.s70@kalvium.community
 - **Course:** B.Tech Computer Science and Engineering
-- **Institution:** Kalvium Community
+- **Institution:** Kalvium Community | Alliance University
+- **Course Mentors / Faculty:**
+  - **DAA Mentor:** Simran Kumari
+  - **FLAT Mentor:** Vaibhav Giri
+  - **COA Mentor:** Moufia Justin
 
 ## 🧩 Subject Concepts Implemented
 1. **FLAT (Modules 1–3):** Deterministic Finite Automata (DFA) state machine $M = (Q, \Sigma, \delta, q_0, F)$ for lexical parsing, microcode syntax validation, and 16-bit binary control word generation.
